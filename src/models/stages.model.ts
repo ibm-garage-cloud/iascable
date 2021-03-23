@@ -137,7 +137,7 @@ export class StageImpl implements Stage, StagePrinter {
 
   asString(stages: {[name: string]: {name: string}}): string {
     return `module "${this.name}" {
-  source = "${this.module.id}?ref=${this.module.version.version}"
+${buildModuleRef(this.module)}
 
 ${this.variablesAsString(stages)}
 }
@@ -160,4 +160,13 @@ ${this.variablesAsString(stages)}
 
     return variableBuffer.toString();
   }
+}
+
+function buildModuleRef(module: SingleModuleVersion, indentation = '  '): string {
+  if (module.type === 'registry') {
+    return `${indentation}source = "${module.id}"
+${indentation}version = "${module.version.version}"`
+  }
+
+  return `${indentation}source = "${module.id}?ref=${module.version.version}"`
 }

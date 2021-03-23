@@ -10,15 +10,20 @@ export interface ModuleMatcher {
   version: VersionMatcher[];
 }
 
+export type ModuleType = 'git' | 'registry';
+export type ModuleProvider = 'ibm' | 'k8s';
+export type ModuleVariableScope = 'module' | 'global' | 'ignore';
+
 export interface ModuleTemplate {
   id: string;
   name: string;
+  type?: ModuleType;
   alias?: string;
   aliasIds?: string[];
   category: string;
   description?: string;
   platforms: string[];
-  provider?: 'ibm' | 'k8s';
+  provider?: ModuleProvider;
   tags?: string[];
   ibmCatalogId?: string;
   fsReady?: string;
@@ -61,7 +66,7 @@ export interface ModuleVariable {
   name: string;
   type: string;
   alias?: string;
-  scope?: 'module' | 'global' | 'ignore';
+  scope?: ModuleVariableScope;
   description?: string;
   optional?: boolean;
   default?: string;

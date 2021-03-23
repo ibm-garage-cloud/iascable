@@ -1,4 +1,4 @@
-import {ModuleVariable} from './module.model';
+import {ModuleVariable, ModuleVariableScope} from './module.model';
 
 export interface StagePrinter {
   asString(stages: {[name: string]: {name: string}}): string;
@@ -10,7 +10,7 @@ export interface IBaseVariable {
   type?: string;
   alias?: string;
   defaultValue?: string;
-  scope?: 'module' | 'global' | 'ignore';
+  scope?: ModuleVariableScope;
   options?: Array<{label: string, value: string}>;
 }
 
@@ -26,7 +26,7 @@ export class ModuleRefVariable implements IModuleVariable, BaseVariable {
   name: string;
   description?: string;
   type?: string;
-  scope?: 'global' | 'module' | 'ignore' = 'module';
+  scope?: ModuleVariableScope = 'module';
 
   moduleRef: {source: string};
   moduleOutputName: string;
@@ -86,7 +86,7 @@ export class PlaceholderVariable implements IPlaceholderVariable, BaseVariable {
   name: string;
   description?: string;
   type?: string;
-  scope?: 'global' | 'module' | 'ignore';
+  scope?: ModuleVariableScope;
   alias?: string;
   defaultValue?: string;
 
