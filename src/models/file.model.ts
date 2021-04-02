@@ -24,10 +24,18 @@ export class UrlFile implements OutputFile {
   }
 
   get contents(): Promise<string | Buffer> {
-    return new Promise<string>(async (resolve) => {
-      const req: superagent.Response = await superagent.get(this.url);
+    if (!this.url) {
+      return Promise.reject(new Error('Url is missing for file: ' + this.name));
+    }
 
-      resolve(req.text);
+    return new Promise<string>(async (resolve, reject) => {
+      try {
+        const req: superagent.Response = await superagent.get(this.url);
+
+        resolve(req.text);
+      } catch (e) {
+        reject(new Error('Error retrieving file ' + this.name + ' from url: ' + this.url));
+      }
     });
   }
 }
